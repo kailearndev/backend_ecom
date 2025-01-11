@@ -1,5 +1,7 @@
 const express = require('express');
 var cors = require('cors');
+const bodyParser = require('body-parser');
+
 const rateLimit = require('express-rate-limit'); // Import express-rate-limit
 
 const connection = require('./db');
@@ -8,14 +10,14 @@ const port = 3000;
 
 // CORS options to allow requests from the frontend
 var corsOptions = {
-    origin: 'https://fe-ecom-sand.vercel.app',
+    origin: ['https://fe-ecom-sand.vercel.app', 'http://localhost:5173', 'http://localhost:5173'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 // Create a rate limiter with express-rate-limit
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 1000, // Limit each IP to 100 requests per windowMs
+    windowMs: 30 * 60 * 1000, // 15 minutes
+    max: 10000, // Limit each IP to 100 requests per windowMs
     message: 'Too many requests from this IP, please try again later.',
     standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -23,6 +25,7 @@ const limiter = rateLimit({
 
 // Apply rate limiting to the /product route
 app.use('/product', limiter);
+app.use(bodyParser.json());
 
 app.get('/product', cors(corsOptions), (req, res) => {
     const query = 'SELECT * FROM product';  // Change to your actual table name
@@ -37,7 +40,15 @@ app.get('/product', cors(corsOptions), (req, res) => {
         });
     });
 });
+app.post('/webhook', cors(corsOptions), (req, res) => {
+    const data = req.body; // Dữ liệu từ webhook (từ QR scan)
 
+
+    console.log('Received QR data:', data);
+
+
+    res.status(200).send({ message: 'Webhook received successfully!' });
+});
 app.use(cors());
 
 app.listen(port, () => {
