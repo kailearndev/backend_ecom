@@ -8,7 +8,7 @@ const port = 3000;
 
 // CORS options to allow requests from the frontend
 var corsOptions = {
-    origin: 'https://fe-ecom-sand.vercel.app/',
+    origin: 'https://fe-ecom-sand.vercel.app',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
