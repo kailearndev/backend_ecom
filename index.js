@@ -10,21 +10,15 @@ const port = 3000;
 
 // CORS options to allow requests from the frontend
 var corsOptions = {
-    origin: ['https://fe-ecom-sand.vercel.app', 'http://localhost:5173', 'http://localhost:5173'],
+    origin: ['https://fe-ecom-sand.vercel.app/'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
 // Create a rate limiter with express-rate-limit
-const limiter = rateLimit({
-    windowMs: 30 * 60 * 1000, // 15 minutes
-    max: 10000, // Limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
+
 
 // Apply rate limiting to the /product route
-app.use('/product', limiter);
+app.use('/product');
 app.use(bodyParser.json());
 
 app.get('/product', cors(corsOptions), (req, res) => {
