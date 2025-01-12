@@ -18,7 +18,6 @@ var corsOptions = {
 
 
 // Apply rate limiting to the /product route
-app.use('/product', limiter);
 app.use(bodyParser.json());
 
 app.get('/product', cors(corsOptions), (req, res) => {
