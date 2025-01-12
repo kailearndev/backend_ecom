@@ -2,15 +2,13 @@ const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 
-const rateLimit = require('express-rate-limit'); // Import express-rate-limit
-
 const connection = require('./db');
 const app = express();
 const port = 3000;
 
 // CORS options to allow requests from the frontend
 var corsOptions = {
-    origin: ['https://fe-ecom-sand.vercel.app/'],
+    origin: ['*'],
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
@@ -18,7 +16,7 @@ var corsOptions = {
 
 
 // Apply rate limiting to the /product route
-app.use('/product');
+
 app.use(bodyParser.json());
 
 app.get('/product', cors(corsOptions), (req, res) => {
